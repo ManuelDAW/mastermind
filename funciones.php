@@ -90,11 +90,24 @@ function compara_jugada($jugada, $clave) {
     return $rtdo;
 }
 
+/**
+ * @return string texto a mostrar la lista de jugadas realizadas
+ *
+ * PAra mostrarlo en el orden inverso (de la última jugada a la primera), invertimos el array
+ * Ver que para que la jugada salga en ese orden he de visualizar la jugada también invertida
+ *  de ahí que el for $n accede a los índices realizando esa resta 3-x
+ *
+ */
 function mostrar_resultados() {
     $jugadas = $_SESSION['jugadas'];
     $resultados = $_SESSION['resultados'];
+    $jugadas = array_reverse($jugadas);
+    $resultados= array_reverse($resultados);
+    $num_jugadas = sizeof($jugadas);
+
     foreach ($jugadas as $index => $jugada) {
-        $msj.="<h4><pre>Jugada $index  ";
+        //Los espación del final para dejar un formato forzado (etiqueta <pre>)
+        $msj.="<h4><pre>Jugada ".($num_jugadas- $index)."   ";
         $pos = $resultados [$index]['pos'];
         $col = $resultados [$index]['col'];
         //$msj.="<p>  </p>";
@@ -104,12 +117,13 @@ function mostrar_resultados() {
             $msj .= "<span class = 'blanco'>" . ($pos + $i) . "</span> ";
 
         for ($n = 0; $n < 4; $n++) {
-            $color = strtolower($jugada[$n]);
-            $letra = strtoupper($color[0]);
+            $color = $jugada[3-$n];
+            $letra = $color[0];
 
-            $msj.="<span class='color $color''>$letra</span>";
+            $msj.="<span class='Color_small $color'>$letra</span>";
         }
         $msj.="</pre></h4>";
     }
     return $msj;
 }
+
